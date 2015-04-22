@@ -12,7 +12,7 @@
 
 @synthesize isRefreshNeeded, deviceToken;
 
-static const NSString* storageVersion = @"v1.0.0";
+static NSString* const storageVersion = @"v1.0.0";
 
 - (SBLocalStorage*) initWithNotificationHubPath: (NSString*) notificationHubPath
 {
