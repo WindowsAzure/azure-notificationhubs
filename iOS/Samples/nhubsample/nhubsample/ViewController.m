@@ -16,14 +16,18 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+
+    // Load raw tags text from storage and initialize the text field
+    NSString *tags = [[NSUserDefaults standardUserDefaults] valueForKey:@"notification_tags"];
+    self.tagsTextField.text = tags;
 }
 
 - (IBAction)handleRegister:(id)sender {
-    UNAuthorizationOptions options =  UNAuthorizationOptionAlert
-    | UNAuthorizationOptionSound
-    | UNAuthorizationOptionBadge;
+    UNAuthorizationOptions options =  UNAuthorizationOptionAlert | UNAuthorizationOptionSound | UNAuthorizationOptionBadge;
     
+    // Save raw tags text in storage
+    [[NSUserDefaults standardUserDefaults] setValue:self.tagsTextField.text forKey:@"notification_tags"];
+
     UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
     [[UNUserNotificationCenter currentNotificationCenter] setDelegate:self];
     [center requestAuthorizationWithOptions:(options) completionHandler:^(BOOL granted, NSError * _Nullable error) {

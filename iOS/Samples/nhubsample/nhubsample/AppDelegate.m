@@ -16,41 +16,9 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    /**
-    UNAuthorizationOptions options =  UNAuthorizationOptionAlert
-    | UNAuthorizationOptionSound
-    | UNAuthorizationOptionBadge;
-    
-    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-    [[UNUserNotificationCenter currentNotificationCenter] setDelegate:self];
-    [center requestAuthorizationWithOptions:(options) completionHandler:^(BOOL granted, NSError * _Nullable error) {
-        if (error != nil) {
-            NSLog(@"Error requesting for authorization: %@", error);
-        }
-    }];
-    [[UIApplication sharedApplication] registerForRemoteNotifications];
-     */
-    
     return YES;
 }
 
-/**
--(void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler {
-    [self logAlert:notification.request.content.userInfo];
-    completionHandler(UNAuthorizationOptionSound | UNAuthorizationOptionAlert | UNAuthorizationOptionBadge);
-}
-
--(void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void(^)(void))completionHandler {
-    [self logAlert:response.notification.request.content.userInfo];
-    completionHandler();
-}
-
--(void)logAlert:(NSDictionary *)userInfo {
-    NSLog(@"User Info : %@", userInfo);
-    [self MessageBox:@"Notification" message:[[userInfo objectForKey:@"aps"] valueForKey:@"alert"]];
-}
-*/
- 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
@@ -78,9 +46,18 @@
 }
 
 - (void) application:(UIApplication *) application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *) deviceToken {
+    NSMutableSet *tags = [[NSMutableSet alloc] init];
+
+    // Load and parse stored tags
+    NSString *unparsedTags = [[NSUserDefaults standardUserDefaults] valueForKey:@"notification_tags"];
+    if (unparsedTags.length > 0) {
+        NSArray *tagsArray = [unparsedTags componentsSeparatedByString: @","];
+        [tags addObjectsFromArray:tagsArray];
+    }
+
     SBNotificationHub* hub = [[SBNotificationHub alloc] initWithConnectionString:HUBLISTENACCESS notificationHubPath:HUBNAME];
     
-    [hub registerNativeWithDeviceToken:deviceToken tags:nil completion:^(NSError* error) {
+    [hub registerNativeWithDeviceToken:deviceToken tags:tags completion:^(NSError* error) {
         if (error != nil) {
             NSLog(@"Error registering for notifications: %@", error);
         } else {
