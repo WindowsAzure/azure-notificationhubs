@@ -2,12 +2,14 @@
 //  HubInfo.h
 //  nhubsample
 //
-//  Created by Matthew Podwysocki on 10/24/18.
-//  Copyright © 2018 Matthew Podwysocki. All rights reserved.
+//  Copyright © 2018 Microsoft. All rights reserved.
+//  Licensed under the MIT license.
 //
 
 #ifndef HubInfo_h
 #define HubInfo_h
 
+#define HUBNAME @"<Enter the name of your hub>"
+#define HUBLISTENACCESS @"<Enter your DefaultListenSharedAccess connection string"
 
 #endif /* HubInfo_h */
