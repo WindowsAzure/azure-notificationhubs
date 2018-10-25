@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import <WindowsAzureMessaging/WindowsAzureMessaging.h>
 #import <UserNotifications/UserNotifications.h>
-#import "HubInfo.h"
 
 @interface ViewController : UIViewController
 

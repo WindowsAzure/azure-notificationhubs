@@ -41,5 +41,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NotificationHubName</key>
+	<string>HUBNAME</string>
+	<key>NotificationHubConnectionString</key>
+	<string>CONNECTIONSTRING</string>
 </dict>
 </plist>

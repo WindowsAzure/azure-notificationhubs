@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "Constants.h"
 
 @interface AppDelegate ()
 
@@ -49,14 +50,13 @@
     NSMutableSet *tags = [[NSMutableSet alloc] init];
 
     // Load and parse stored tags
-    NSString *unparsedTags = [[NSUserDefaults standardUserDefaults] valueForKey:@"notification_tags"];
+    NSString *unparsedTags = [[NSUserDefaults standardUserDefaults] valueForKey:NHUserDefaultTags];
     if (unparsedTags.length > 0) {
         NSArray *tagsArray = [unparsedTags componentsSeparatedByString: @","];
         [tags addObjectsFromArray:tagsArray];
     }
 
-    SBNotificationHub* hub = [[SBNotificationHub alloc] initWithConnectionString:HUBLISTENACCESS notificationHubPath:HUBNAME];
-    
+    SBNotificationHub* hub = [self getNotificationHub];
     [hub registerNativeWithDeviceToken:deviceToken tags:tags completion:^(NSError* error) {
         if (error != nil) {
             NSLog(@"Error registering for notifications: %@", error);
@@ -71,6 +71,16 @@
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
     [alert addAction:okAction];
     [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:alert animated:YES completion:nil];
+}
+
+- (SBNotificationHub *)getNotificationHub {
+    NSString *hubName = [[NSBundle mainBundle] objectForInfoDictionaryKey:NHInfoHubName];
+    NSString *connectionString = [[NSBundle mainBundle] objectForInfoDictionaryKey:NHInfoConnectionString];
+    
+    NSLog(@"Loaded hub name: %@", hubName);
+    NSLog(@"Loaded connection string: %@", connectionString);
+    
+    return [[SBNotificationHub alloc] initWithConnectionString:connectionString notificationHubPath:hubName];
 }
 
 @end

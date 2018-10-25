@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2A076B4021813EC600E5E363 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A076B3F21813EC600E5E363 /* Constants.m */; };
 		4C5951E92180E096006C2550 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C5951E82180E096006C2550 /* AppDelegate.m */; };
 		4C5951EC2180E096006C2550 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C5951EB2180E096006C2550 /* ViewController.m */; };
 		4C5951EF2180E096006C2550 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C5951ED2180E096006C2550 /* Main.storyboard */; };
@@ -17,6 +18,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2A076B3E21813DDC00E5E363 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		2A076B3F21813EC600E5E363 /* Constants.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		4C5951E42180E096006C2550 /* nhubsample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = nhubsample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C5951E72180E096006C2550 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		4C5951E82180E096006C2550 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -29,7 +32,6 @@
 		4C5951F62180E098006C2550 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		4C5951FD2180E1EB006C2550 /* nhubsample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = nhubsample.entitlements; sourceTree = "<group>"; };
 		4C5951FE2180E320006C2550 /* WindowsAzureMessaging.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WindowsAzureMessaging.framework; sourceTree = "<group>"; };
-		4C5952002180E387006C2550 /* HubInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HubInfo.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,7 +76,8 @@
 				4C5951F22180E098006C2550 /* LaunchScreen.storyboard */,
 				4C5951F52180E098006C2550 /* Info.plist */,
 				4C5951F62180E098006C2550 /* main.m */,
-				4C5952002180E387006C2550 /* HubInfo.h */,
+				2A076B3E21813DDC00E5E363 /* Constants.h */,
+				2A076B3F21813EC600E5E363 /* Constants.m */,
 			);
 			path = nhubsample;
 			sourceTree = "<group>";
@@ -106,7 +109,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 1000;
-				ORGANIZATIONNAME = "Microsoft";
+				ORGANIZATIONNAME = Microsoft;
 				TargetAttributes = {
 					4C5951E32180E095006C2550 = {
 						CreatedOnToolsVersion = 10.0;
@@ -157,6 +160,7 @@
 				4C5951EC2180E096006C2550 /* ViewController.m in Sources */,
 				4C5951F72180E098006C2550 /* main.m in Sources */,
 				4C5951E92180E096006C2550 /* AppDelegate.m in Sources */,
+				2A076B4021813EC600E5E363 /* Constants.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -306,6 +310,7 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = nhubsample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -328,6 +333,7 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = nhubsample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

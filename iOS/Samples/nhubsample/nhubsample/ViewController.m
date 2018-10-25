@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "Constants.h"
 
 @interface ViewController ()
 
@@ -18,7 +19,7 @@
     [super viewDidLoad];
 
     // Load raw tags text from storage and initialize the text field
-    NSString *tags = [[NSUserDefaults standardUserDefaults] valueForKey:@"notification_tags"];
+    NSString *tags = [[NSUserDefaults standardUserDefaults] valueForKey:NHUserDefaultTags];
     self.tagsTextField.text = tags;
 }
 
@@ -54,7 +55,7 @@
 }
 
 - (IBAction)handleUnregister:(id)sender {
-    SBNotificationHub* hub = [[SBNotificationHub alloc] initWithConnectionString:HUBLISTENACCESS notificationHubPath:HUBNAME];
+    SBNotificationHub *hub = [self getNotificationHub];
     
     [hub unregisterNativeWithCompletion :^(NSError* error) {
         if (error != nil) {
@@ -70,6 +71,16 @@
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
     [alert addAction:okAction];
     [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:alert animated:YES completion:nil];
+}
+
+- (SBNotificationHub *)getNotificationHub {
+    NSString *hubName = [[NSBundle mainBundle] objectForInfoDictionaryKey:NHInfoHubName];
+    NSString *connectionString = [[NSBundle mainBundle] objectForInfoDictionaryKey:NHInfoConnectionString];
+    
+    NSLog(@"Loaded hub name: %@", hubName);
+    NSLog(@"Loaded connection string: %@", connectionString);
+    
+    return [[SBNotificationHub alloc] initWithConnectionString:connectionString notificationHubPath:hubName];
 }
 
 @end
