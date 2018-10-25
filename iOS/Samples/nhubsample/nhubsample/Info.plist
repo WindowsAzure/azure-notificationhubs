@@ -20,6 +20,14 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NotificationHubConnectionString</key>
+	<string>CONNECTIONSTRING</string>
+	<key>NotificationHubName</key>
+	<string>HUBNAME</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -39,9 +47,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>NotificationHubName</key>
-	<string>HUBNAME</string>
-	<key>NotificationHubConnectionString</key>
-	<string>CONNECTIONSTRING</string>
 </dict>
 </plist>
