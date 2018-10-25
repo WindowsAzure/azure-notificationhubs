@@ -2,7 +2,7 @@
 //  main.m
 //  nhubsample
 //
-//  Copyright © 2018 MMicrosoft All rights reserved.
+//  Copyright © 2018 Microsoft All rights reserved.
 //  Licensed under the MIT license.
 //
 
