@@ -97,7 +97,8 @@
 
 - (void)logAlert:(NSDictionary *)userInfo {
     NSLog(@"User Info : %@", userInfo);
-    [self MessageBox:@"Notification" message:[[userInfo objectForKey:@"aps"] valueForKey:@"alert"]];
+    NSDictionary *alertInfo = [[userInfo objectForKey:@"aps"] valueForKey:@"alert"];
+    [self MessageBox:[alertInfo valueForKey:@"title"] message:[alertInfo valueForKey:@"body"]];
 }
 
 

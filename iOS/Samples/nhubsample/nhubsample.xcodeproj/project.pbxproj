@@ -15,7 +15,33 @@
 		4C5951F42180E098006C2550 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C5951F22180E098006C2550 /* LaunchScreen.storyboard */; };
 		4C5951F72180E098006C2550 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C5951F62180E098006C2550 /* main.m */; };
 		4C5951FF2180E320006C2550 /* WindowsAzureMessaging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C5951FE2180E320006C2550 /* WindowsAzureMessaging.framework */; };
+		4C595209218270FA006C2550 /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C595208218270FA006C2550 /* NotificationService.m */; };
+		4C59520D218270FB006C2550 /* nhubmodifier.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 4C595205218270FA006C2550 /* nhubmodifier.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		4C59520B218270FB006C2550 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4C5951DC2180E095006C2550 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4C595204218270FA006C2550;
+			remoteInfo = nhubmodifier;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		4C595211218270FB006C2550 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				4C59520D218270FB006C2550 /* nhubmodifier.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		2A076B3E21813DDC00E5E363 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
@@ -32,6 +58,10 @@
 		4C5951F62180E098006C2550 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		4C5951FD2180E1EB006C2550 /* nhubsample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = nhubsample.entitlements; sourceTree = "<group>"; };
 		4C5951FE2180E320006C2550 /* WindowsAzureMessaging.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WindowsAzureMessaging.framework; sourceTree = "<group>"; };
+		4C595205218270FA006C2550 /* nhubmodifier.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = nhubmodifier.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		4C595207218270FA006C2550 /* NotificationService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationService.h; sourceTree = "<group>"; };
+		4C595208218270FA006C2550 /* NotificationService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationService.m; sourceTree = "<group>"; };
+		4C59520A218270FA006C2550 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +73,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4C595202218270FA006C2550 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -51,6 +88,7 @@
 			children = (
 				4C5951FE2180E320006C2550 /* WindowsAzureMessaging.framework */,
 				4C5951E62180E096006C2550 /* nhubsample */,
+				4C595206218270FA006C2550 /* nhubmodifier */,
 				4C5951E52180E096006C2550 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -59,6 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				4C5951E42180E096006C2550 /* nhubsample.app */,
+				4C595205218270FA006C2550 /* nhubmodifier.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -82,6 +121,16 @@
 			path = nhubsample;
 			sourceTree = "<group>";
 		};
+		4C595206218270FA006C2550 /* nhubmodifier */ = {
+			isa = PBXGroup;
+			children = (
+				4C595207218270FA006C2550 /* NotificationService.h */,
+				4C595208218270FA006C2550 /* NotificationService.m */,
+				4C59520A218270FA006C2550 /* Info.plist */,
+			);
+			path = nhubmodifier;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -92,15 +141,34 @@
 				4C5951E02180E095006C2550 /* Sources */,
 				4C5951E12180E095006C2550 /* Frameworks */,
 				4C5951E22180E095006C2550 /* Resources */,
+				4C595211218270FB006C2550 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				4C59520C218270FB006C2550 /* PBXTargetDependency */,
 			);
 			name = nhubsample;
 			productName = nhubsample;
 			productReference = 4C5951E42180E096006C2550 /* nhubsample.app */;
 			productType = "com.apple.product-type.application";
+		};
+		4C595204218270FA006C2550 /* nhubmodifier */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4C59520E218270FB006C2550 /* Build configuration list for PBXNativeTarget "nhubmodifier" */;
+			buildPhases = (
+				4C595201218270FA006C2550 /* Sources */,
+				4C595202218270FA006C2550 /* Frameworks */,
+				4C595203218270FA006C2550 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = nhubmodifier;
+			productName = nhubmodifier;
+			productReference = 4C595205218270FA006C2550 /* nhubmodifier.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -122,6 +190,9 @@
 							};
 						};
 					};
+					4C595204218270FA006C2550 = {
+						CreatedOnToolsVersion = 10.0;
+					};
 				};
 			};
 			buildConfigurationList = 4C5951DF2180E095006C2550 /* Build configuration list for PBXProject "nhubsample" */;
@@ -138,6 +209,7 @@
 			projectRoot = "";
 			targets = (
 				4C5951E32180E095006C2550 /* nhubsample */,
+				4C595204218270FA006C2550 /* nhubmodifier */,
 			);
 		};
 /* End PBXProject section */
@@ -150,6 +222,13 @@
 				4C5951F42180E098006C2550 /* LaunchScreen.storyboard in Resources */,
 				4C5951F12180E098006C2550 /* Assets.xcassets in Resources */,
 				4C5951EF2180E096006C2550 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4C595203218270FA006C2550 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -167,7 +246,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4C595201218270FA006C2550 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4C595209218270FA006C2550 /* NotificationService.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4C59520C218270FB006C2550 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4C595204218270FA006C2550 /* nhubmodifier */;
+			targetProxy = 4C59520B218270FB006C2550 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		4C5951ED2180E096006C2550 /* Main.storyboard */ = {
@@ -347,6 +442,42 @@
 			};
 			name = Release;
 		};
+		4C59520F218270FB006C2550 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = EF9WEB9D5K;
+				INFOPLIST_FILE = nhubmodifier/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.nhubsample.nhubmodifier;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		4C595210218270FB006C2550 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = EF9WEB9D5K;
+				INFOPLIST_FILE = nhubmodifier/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.nhubsample.nhubmodifier;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -364,6 +495,15 @@
 			buildConfigurations = (
 				4C5951FB2180E098006C2550 /* Debug */,
 				4C5951FC2180E098006C2550 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4C59520E218270FB006C2550 /* Build configuration list for PBXNativeTarget "nhubmodifier" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4C59520F218270FB006C2550 /* Debug */,
+				4C595210218270FB006C2550 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
