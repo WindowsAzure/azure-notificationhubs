@@ -128,5 +128,23 @@
     completionHandler();
 }
 
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler {
+
+    NSLog(@"User Info : %@", userInfo);
+    
+    if(application.applicationState == UIApplicationStateInactive) {
+        NSLog(@"Inactive");
+        
+        completionHandler(UIBackgroundFetchResultNewData);
+    } else if (application.applicationState == UIApplicationStateBackground) {
+        NSLog(@"Background");
+        
+        completionHandler(UIBackgroundFetchResultNewData);
+    } else {
+        NSLog(@"Active");
+        
+        completionHandler(UIBackgroundFetchResultNewData);
+    }
+}
 
 @end

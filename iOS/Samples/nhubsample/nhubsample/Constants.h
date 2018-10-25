@@ -4,8 +4,8 @@
 #ifndef Constants_h
 #define Constants_h
 
-extern const NSString *NHInfoHubName;
-extern const NSString *NHInfoConnectionString;
-extern const NSString *NHUserDefaultTags;
+extern NSString* const NHInfoHubName;
+extern NSString* const NHInfoConnectionString;
+extern NSString* const NHUserDefaultTags;
 
 #endif /* Constants_h */

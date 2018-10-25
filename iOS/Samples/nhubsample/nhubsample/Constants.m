@@ -4,7 +4,6 @@
 #import <Foundation/Foundation.h>
 #import "Constants.h"
 
-const NSString *NHInfoHubName = @"NotificationHubName";
-const NSString *NHInfoConnectionString = @"NotificationHubConnectionString";
-
-const NSString *NHUserDefaultTags = @"notification_tags";
+NSString* const NHInfoHubName = @"NotificationHubName";
+NSString* const NHInfoConnectionString = @"NotificationHubConnectionString";
+NSString* const NHUserDefaultTags = @"notification_tags";
