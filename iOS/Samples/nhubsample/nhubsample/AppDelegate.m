@@ -3,7 +3,7 @@
 //  nhubsample
 //
 //  Copyright © 2018 Microsoft All rights reserved.
-//  Licensed under the MIT license.
+//  Licensed under the Apache License (2.0).
 //
 
 #import "AppDelegate.h"
