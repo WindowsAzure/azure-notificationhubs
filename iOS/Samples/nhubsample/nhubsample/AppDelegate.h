@@ -14,6 +14,8 @@
 
 @property (strong, nonatomic) UIWindow *window;
 
+- (void)handleRegister;
+- (void)handleUnregister;
 
 @end
 
