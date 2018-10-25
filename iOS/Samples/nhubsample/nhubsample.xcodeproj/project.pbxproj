@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2A076B4021813EC600E5E363 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A076B3F21813EC600E5E363 /* Constants.m */; };
+		2A076B44218275F500E5E363 /* NotificationHubs-Splash.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A076B43218275F500E5E363 /* NotificationHubs-Splash.png */; };
 		4C5951E92180E096006C2550 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C5951E82180E096006C2550 /* AppDelegate.m */; };
 		4C5951EC2180E096006C2550 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C5951EB2180E096006C2550 /* ViewController.m */; };
 		4C5951EF2180E096006C2550 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C5951ED2180E096006C2550 /* Main.storyboard */; };
@@ -46,6 +47,7 @@
 /* Begin PBXFileReference section */
 		2A076B3E21813DDC00E5E363 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		2A076B3F21813EC600E5E363 /* Constants.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
+		2A076B43218275F500E5E363 /* NotificationHubs-Splash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NotificationHubs-Splash.png"; sourceTree = "<group>"; };
 		4C5951E42180E096006C2550 /* nhubsample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = nhubsample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C5951E72180E096006C2550 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		4C5951E82180E096006C2550 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 				4C5951F62180E098006C2550 /* main.m */,
 				2A076B3E21813DDC00E5E363 /* Constants.h */,
 				2A076B3F21813EC600E5E363 /* Constants.m */,
+				2A076B43218275F500E5E363 /* NotificationHubs-Splash.png */,
 			);
 			path = nhubsample;
 			sourceTree = "<group>";
@@ -221,6 +224,7 @@
 			files = (
 				4C5951F42180E098006C2550 /* LaunchScreen.storyboard in Resources */,
 				4C5951F12180E098006C2550 /* Assets.xcassets in Resources */,
+				2A076B44218275F500E5E363 /* NotificationHubs-Splash.png in Resources */,
 				4C5951EF2180E096006C2550 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
