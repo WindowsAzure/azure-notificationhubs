@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-INFO_PLIST=$APPCENTER_SOURCE_DIRECTORY/nhubsample/Info.plist
+INFO_PLIST=$APPCENTER_SOURCE_DIRECTORY/nhubsample/nhubsample/Info.plist
 
 if [ "$NHUB_NAME" != "" ]; then
     plutil -replace NotificationHubName -string "$NHUB_NAME" $INFO_PLIST
