@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "Constants.h"
+#import "NotificationDetailViewController.h"
 
 @interface AppDelegate ()
 
@@ -17,6 +18,7 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    [[UNUserNotificationCenter currentNotificationCenter] setDelegate:self];
     return YES;
 }
 
@@ -63,16 +65,15 @@
         if (error != nil) {
             NSLog(@"Error registering for notifications: %@", error);
         } else {
-            [self MessageBox:@"Registration Status" message:@"Registered"];
+            [self showAlert:@"Registered" withTitle:@"Registration Status"];
         }
     }];
 }
 
 - (void)handleRegister {
-    UNAuthorizationOptions options =  UNAuthorizationOptionAlert | UNAuthorizationOptionSound | UNAuthorizationOptionBadge;
-
     UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-    [[UNUserNotificationCenter currentNotificationCenter] setDelegate:self];
+
+    UNAuthorizationOptions options =  UNAuthorizationOptionAlert | UNAuthorizationOptionSound | UNAuthorizationOptionBadge;
     [center requestAuthorizationWithOptions:(options) completionHandler:^(BOOL granted, NSError * _Nullable error) {
         if (error != nil) {
             NSLog(@"Error requesting for authorization: %@", error);
@@ -84,29 +85,36 @@
 
 - (void)handleUnregister {
     SBNotificationHub *hub = [self getNotificationHub];
-    
-    [hub unregisterNativeWithCompletion :^(NSError* error) {
+    [hub unregisterNativeWithCompletion:^(NSError* error) {
         if (error != nil) {
             NSLog(@"Error unregistering for push: %@", error);
         } else {
-            [self MessageBox:@"Registration Status" message:@"Unregistered"];
+            [self showAlert:@"Unregistered" withTitle:@"Registration Status"];
         }
     }];
 }
 
 
-- (void)logAlert:(NSDictionary *)userInfo {
-    NSLog(@"User Info : %@", userInfo);
-    NSDictionary *alertInfo = [[userInfo objectForKey:@"aps"] valueForKey:@"alert"];
-    [self MessageBox:[alertInfo valueForKey:@"title"] message:[alertInfo valueForKey:@"body"]];
+- (void)showAlert:(NSString *)message withTitle:(NSString *)title {
+    if (title == nil) {
+        title = @"Alert";
+    }
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+    [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:alert animated:YES completion:nil];
 }
 
 
-- (void)MessageBox:(NSString *)title message:(NSString *)messageText {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:messageText preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-    [alert addAction:okAction];
-    [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:alert animated:YES completion:nil];
+- (void)showNotification:(NSDictionary *)userInfo {
+    [self logNotificationDetails:userInfo];
+
+    NotificationDetailViewController *notificationDetail = [[NotificationDetailViewController alloc] initWithUserInfo:userInfo];
+    
+    UIViewController *root = [[[UIApplication sharedApplication] keyWindow] rootViewController];
+    
+    [root presentViewController:notificationDetail animated:YES completion:^{
+        NSLog(@"Done showing notification");
+    }];
 }
 
 
@@ -119,33 +127,36 @@
 
 
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler {
-    [self logAlert:notification.request.content.userInfo];
+    //
+    // Received notification while the application is in the foreground
+    //
+    [self showNotification:notification.request.content.userInfo];
     completionHandler(UNAuthorizationOptionSound | UNAuthorizationOptionAlert | UNAuthorizationOptionBadge);
 }
 
 
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void(^)(void))completionHandler {
-    [self logAlert:response.notification.request.content.userInfo];
+    //
+    // Received notification while the application is in the background
+    //
+    [self showNotification:response.notification.request.content.userInfo];
     completionHandler();
 }
 
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler {
 
-    NSLog(@"User Info : %@", userInfo);
-    
-    if(application.applicationState == UIApplicationStateInactive) {
-        NSLog(@"Inactive");
-        
-        completionHandler(UIBackgroundFetchResultNewData);
-    } else if (application.applicationState == UIApplicationStateBackground) {
-        NSLog(@"Background");
-        
-        completionHandler(UIBackgroundFetchResultNewData);
-    } else {
-        NSLog(@"Active");
-        
-        completionHandler(UIBackgroundFetchResultNewData);
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler {
+    [self logNotificationDetails:userInfo];
+    completionHandler(UIBackgroundFetchResultNoData);
+}
+
+
+- (void)logNotificationDetails:(NSDictionary *)userInfo {
+    if (userInfo != nil) {
+        UIApplicationState state = [UIApplication sharedApplication].applicationState;
+        BOOL background = state != UIApplicationStateActive;
+        NSLog(@"Received %@notification: \n%@", background ? @"(background) " : @"", userInfo);
     }
 }
+
 
 @end

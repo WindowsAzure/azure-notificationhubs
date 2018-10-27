@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		2A076B4021813EC600E5E363 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A076B3F21813EC600E5E363 /* Constants.m */; };
 		2A076B44218275F500E5E363 /* NotificationHubs-Splash.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A076B43218275F500E5E363 /* NotificationHubs-Splash.png */; };
+		2AD5C0272182858100D55BB8 /* NotificationDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AD5C0262182858100D55BB8 /* NotificationDetailViewController.m */; };
+		2AED216D21829C0800F198AC /* NotificationDetail.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2AED216C21829C0800F198AC /* NotificationDetail.xib */; };
 		4C5951E92180E096006C2550 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C5951E82180E096006C2550 /* AppDelegate.m */; };
 		4C5951EC2180E096006C2550 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C5951EB2180E096006C2550 /* ViewController.m */; };
 		4C5951EF2180E096006C2550 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C5951ED2180E096006C2550 /* Main.storyboard */; };
@@ -48,6 +50,9 @@
 		2A076B3E21813DDC00E5E363 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		2A076B3F21813EC600E5E363 /* Constants.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		2A076B43218275F500E5E363 /* NotificationHubs-Splash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NotificationHubs-Splash.png"; sourceTree = "<group>"; };
+		2AD5C0252182858100D55BB8 /* NotificationDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationDetailViewController.h; sourceTree = "<group>"; };
+		2AD5C0262182858100D55BB8 /* NotificationDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationDetailViewController.m; sourceTree = "<group>"; };
+		2AED216C21829C0800F198AC /* NotificationDetail.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotificationDetail.xib; sourceTree = "<group>"; };
 		4C5951E42180E096006C2550 /* nhubsample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = nhubsample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C5951E72180E096006C2550 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		4C5951E82180E096006C2550 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -120,6 +125,9 @@
 				2A076B3E21813DDC00E5E363 /* Constants.h */,
 				2A076B3F21813EC600E5E363 /* Constants.m */,
 				2A076B43218275F500E5E363 /* NotificationHubs-Splash.png */,
+				2AD5C0252182858100D55BB8 /* NotificationDetailViewController.h */,
+				2AD5C0262182858100D55BB8 /* NotificationDetailViewController.m */,
+				2AED216C21829C0800F198AC /* NotificationDetail.xib */,
 			);
 			path = nhubsample;
 			sourceTree = "<group>";
@@ -222,6 +230,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2AED216D21829C0800F198AC /* NotificationDetail.xib in Resources */,
 				4C5951F42180E098006C2550 /* LaunchScreen.storyboard in Resources */,
 				4C5951F12180E098006C2550 /* Assets.xcassets in Resources */,
 				2A076B44218275F500E5E363 /* NotificationHubs-Splash.png in Resources */,
@@ -243,6 +252,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2AD5C0272182858100D55BB8 /* NotificationDetailViewController.m in Sources */,
 				4C5951EC2180E096006C2550 /* ViewController.m in Sources */,
 				4C5951F72180E098006C2550 /* main.m in Sources */,
 				4C5951E92180E096006C2550 /* AppDelegate.m in Sources */,
