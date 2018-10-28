@@ -70,6 +70,7 @@
     }];
 }
 
+
 - (void)handleRegister {
     UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
 
@@ -109,12 +110,7 @@
     [self logNotificationDetails:userInfo];
 
     NotificationDetailViewController *notificationDetail = [[NotificationDetailViewController alloc] initWithUserInfo:userInfo];
-    
-    UIViewController *root = [[[UIApplication sharedApplication] keyWindow] rootViewController];
-    
-    [root presentViewController:notificationDetail animated:YES completion:^{
-        NSLog(@"Done showing notification");
-    }];
+    [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:notificationDetail animated:YES completion:nil];
 }
 
 
@@ -127,24 +123,28 @@
 
 
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler {
-    //
-    // Received notification while the application is in the foreground
-    //
+    NSLog(@"Received notification while the application is in the foreground");
     [self showNotification:notification.request.content.userInfo];
-    completionHandler(UNAuthorizationOptionSound | UNAuthorizationOptionAlert | UNAuthorizationOptionBadge);
+
+    //
+    // Use 'options' to specify which default behaviors to enable.
+    // - UNAuthorizationOptionBadge: allow the app badge to be updated.
+    // - UNAuthorizationOptionSound: allow the notification sound to be played.
+    // - UNAuthorizationOptionAlert: allow the notification alert to be displayed.
+    //
+    completionHandler(UNAuthorizationOptionBadge | UNAuthorizationOptionSound);
 }
 
 
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void(^)(void))completionHandler {
-    //
-    // Received notification while the application is in the background
-    //
+    NSLog(@"Received notification while the application is in the background");
     [self showNotification:response.notification.request.content.userInfo];
     completionHandler();
 }
 
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler {
+    NSLog(@"Received remote (silent) notification");
     [self logNotificationDetails:userInfo];
     completionHandler(UIBackgroundFetchResultNoData);
 }

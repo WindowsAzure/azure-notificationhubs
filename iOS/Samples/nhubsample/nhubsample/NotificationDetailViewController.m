@@ -14,6 +14,7 @@
 
 @implementation NotificationDetailViewController
 
+
 - (id)initWithUserInfo:(NSDictionary *)userInfo {
     self = [super initWithNibName:@"NotificationDetail" bundle:nil];
     if (self) {
@@ -22,14 +23,47 @@
     return self;
 }
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+
+    NSString *title = nil;
+    NSString *body = nil;
     
     NSDictionary *aps = [_userInfo valueForKey:@"aps"];
-    NSDictionary *alert = [aps valueForKey:@"alert"];
-    self.titleLabel.text = [alert valueForKey:@"title"];
-    self.bodyLabel.text = [alert valueForKey:@"body"];
+    NSObject *alertObject = [aps valueForKey:@"alert"];
+    if (alertObject != nil) {
+        if ([alertObject isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *alertDict = (NSDictionary *)alertObject;
+            title = [alertDict valueForKey:@"title"];
+            body = [alertObject valueForKey:@"body"];
+        } else if ([alertObject isKindOfClass:[NSString class]]) {
+            body = (NSString *)alertObject;
+        } else {
+            NSLog(@"Unable to parse notification content. Unexpected format: %@", alertObject);
+        }
+    }
+    
+    if (title == nil) {
+        title = @"<unset>";
+    }
+    
+    if (body == nil) {
+        body = @"<unset>";
+    }
+    
+    self.titleLabel.text = title;
+    self.bodyLabel.text = body;
+}
+
+
+- (void)viewDidLayoutSubviews {
+    //
+    // Workaround the fact that UILabel doesn't support top-left aligned text.
+    // Instead resize the control to fit the specified text.
+    //
+    [self.titleLabel sizeToFit];
+    [self.bodyLabel sizeToFit];
 }
 
 
@@ -37,15 +71,5 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
