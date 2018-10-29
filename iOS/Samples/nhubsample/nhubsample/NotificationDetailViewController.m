@@ -1,7 +1,4 @@
 //
-//  NotificationDetailViewController.m
-//  nhubsample
-//
 //  Copyright © 2018 Microsoft All rights reserved.
 //  Licensed under the Apache License (2.0).
 //
@@ -14,6 +11,11 @@
 
 @implementation NotificationDetailViewController
 
+////////////////////////////////////////////////////////////////////////////////
+//
+// UIViewController methods
+//
+////////////////////////////////////////////////////////////////////////////////
 
 - (id)initWithUserInfo:(NSDictionary *)userInfo {
     self = [super initWithNibName:@"NotificationDetail" bundle:nil];
@@ -23,6 +25,14 @@
     return self;
 }
 
+- (void)viewDidLayoutSubviews {
+    //
+    // Workaround the fact that UILabel doesn't support top-left aligned text.
+    // Instead resize the control to fit the specified text.
+    //
+    [self.titleLabel sizeToFit];
+    [self.bodyLabel sizeToFit];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -56,20 +66,14 @@
     self.bodyLabel.text = body;
 }
 
-
-- (void)viewDidLayoutSubviews {
-    //
-    // Workaround the fact that UILabel doesn't support top-left aligned text.
-    // Instead resize the control to fit the specified text.
-    //
-    [self.titleLabel sizeToFit];
-    [self.bodyLabel sizeToFit];
-}
-
+////////////////////////////////////////////////////////////////////////////////
+//
+// Actions
+//
+////////////////////////////////////////////////////////////////////////////////
 
 - (IBAction)handleDismiss:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
-
 
 @end

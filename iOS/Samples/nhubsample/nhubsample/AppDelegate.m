@@ -1,7 +1,4 @@
 //
-//  AppDelegate.m
-//  nhubsample
-//
 //  Copyright © 2018 Microsoft All rights reserved.
 //  Licensed under the Apache License (2.0).
 //
@@ -16,40 +13,48 @@
 
 @implementation AppDelegate
 
+////////////////////////////////////////////////////////////////////////////////
+//
+// UIApplicationDelegate methods
+//
+////////////////////////////////////////////////////////////////////////////////
 
+//
+// Tells the delegate that the launch process is almost done and the app is almost ready to run.
+//
+// https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1622921-application?language=objc
+//
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
+    //
+    // It is important to always set the UNUserNotificationCenterDelegate when the app launches. Otherwise the app
+    // may miss some notifications.
+    //
     [[UNUserNotificationCenter currentNotificationCenter] setDelegate:self];
+
     return YES;
 }
 
-
-- (void)applicationWillResignActive:(UIApplication *)application {
-    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
+//
+// Tells the app that a remote notification arrived that indicates there is data to be fetched.
+//
+// https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623013-application?language=objc
+//
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler {
+    NSLog(@"Received remote (silent) notification");
+    [self logNotificationDetails:userInfo];
+    
+    //
+    // Let the system know the silent notification has been processed.
+    //
+    completionHandler(UIBackgroundFetchResultNoData);
 }
 
-
-- (void)applicationDidEnterBackground:(UIApplication *)application {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-}
-
-
-- (void)applicationWillEnterForeground:(UIApplication *)application {
-    // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-}
-
-
-- (void)applicationDidBecomeActive:(UIApplication *)application {
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-}
-
-
-- (void)applicationWillTerminate:(UIApplication *)application {
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-}
-
-
+//
+// Tells the delegate that the app successfully registered with Apple Push Notification service (APNs).
+//
+// https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1622958-application?language=objc
+//
 - (void) application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     NSMutableSet *tags = [[NSMutableSet alloc] init];
 
@@ -60,6 +65,11 @@
         [tags addObjectsFromArray:tagsArray];
     }
 
+    //
+    // Register the device with the Notification Hub.
+    // If the device has not already been registered, this will create the registration.
+    // If the device has already been registered, this will update the existing registration.
+    //
     SBNotificationHub* hub = [self getNotificationHub];
     [hub registerNativeWithDeviceToken:deviceToken tags:tags completion:^(NSError* error) {
         if (error != nil) {
@@ -70,6 +80,75 @@
     }];
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//
+// UNUserNotificationCenterDelegate methods
+//
+////////////////////////////////////////////////////////////////////////////////
+
+//
+// Asks the delegate how to handle a notification that arrived while the app was running in the foreground.
+//
+// https://developer.apple.com/documentation/usernotifications/unusernotificationcenterdelegate/1649518-usernotificationcenter?language=objc
+//
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler {
+    NSLog(@"Received notification while the application is in the foreground");
+    //
+    // The system calls this delegate method when the app is in the foreground. This allows the app to handle the notification
+    // itself (and potentially modify the default system behavior).
+    //
+    
+    //
+    // Handle the notification by displaying custom UI.
+    //
+    [self showNotification:notification.request.content.userInfo];
+    
+    //
+    // Use 'options' to specify which default behaviors to enable.
+    // https://developer.apple.com/documentation/usernotifications/unnotificationpresentationoptions?language=objc
+    // - UNAuthorizationOptionBadge: Apply the notification's badge value to the app’s icon.
+    // - UNAuthorizationOptionSound: Play the sound associated with the notification.
+    // - UNAuthorizationOptionAlert: Display the alert using the content provided by the notification.
+    //
+    // In this case, do not pass UNAuthorizationOptionAlert because the notification was handled by the app.
+    //
+    completionHandler(UNAuthorizationOptionBadge | UNAuthorizationOptionSound);
+}
+
+//
+// Asks the delegate to process the user's response to a delivered notification.
+//
+// https://developer.apple.com/documentation/usernotifications/unusernotificationcenterdelegate/1649501-usernotificationcenter?language=objc
+//
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void(^)(void))completionHandler {
+    NSLog(@"Received notification while the application is in the background");
+    //
+    // The system calls this delegate method when the user taps or responds to the system notification.
+    //
+    
+    //
+    // Handle the notification response by displaying custom UI
+    //
+    [self showNotification:response.notification.request.content.userInfo];
+    
+    //
+    // Let the system know the response has been processed.
+    //
+    completionHandler();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//
+// App logic and helpers
+//
+////////////////////////////////////////////////////////////////////////////////
+
+- (SBNotificationHub *)getNotificationHub {
+    NSString *hubName = [[NSBundle mainBundle] objectForInfoDictionaryKey:NHInfoHubName];
+    NSString *connectionString = [[NSBundle mainBundle] objectForInfoDictionaryKey:NHInfoConnectionString];
+    
+    return [[SBNotificationHub alloc] initWithConnectionString:connectionString notificationHubPath:hubName];
+}
 
 - (void)handleRegister {
     UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
@@ -83,8 +162,10 @@
     [[UIApplication sharedApplication] registerForRemoteNotifications];
 }
 
-
 - (void)handleUnregister {
+    //
+    // Unregister the device with the Notification Hub.
+    //
     SBNotificationHub *hub = [self getNotificationHub];
     [hub unregisterNativeWithCompletion:^(NSError* error) {
         if (error != nil) {
@@ -95,6 +176,13 @@
     }];
 }
 
+- (void)logNotificationDetails:(NSDictionary *)userInfo {
+    if (userInfo != nil) {
+        UIApplicationState state = [UIApplication sharedApplication].applicationState;
+        BOOL background = state != UIApplicationStateActive;
+        NSLog(@"Received %@notification: \n%@", background ? @"(background) " : @"", userInfo);
+    }
+}
 
 - (void)showAlert:(NSString *)message withTitle:(NSString *)title {
     if (title == nil) {
@@ -105,58 +193,11 @@
     [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:alert animated:YES completion:nil];
 }
 
-
 - (void)showNotification:(NSDictionary *)userInfo {
     [self logNotificationDetails:userInfo];
 
     NotificationDetailViewController *notificationDetail = [[NotificationDetailViewController alloc] initWithUserInfo:userInfo];
     [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:notificationDetail animated:YES completion:nil];
 }
-
-
-- (SBNotificationHub *)getNotificationHub {
-    NSString *hubName = [[NSBundle mainBundle] objectForInfoDictionaryKey:NHInfoHubName];
-    NSString *connectionString = [[NSBundle mainBundle] objectForInfoDictionaryKey:NHInfoConnectionString];
-    
-    return [[SBNotificationHub alloc] initWithConnectionString:connectionString notificationHubPath:hubName];
-}
-
-
-- (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler {
-    NSLog(@"Received notification while the application is in the foreground");
-    [self showNotification:notification.request.content.userInfo];
-
-    //
-    // Use 'options' to specify which default behaviors to enable.
-    // - UNAuthorizationOptionBadge: allow the app badge to be updated.
-    // - UNAuthorizationOptionSound: allow the notification sound to be played.
-    // - UNAuthorizationOptionAlert: allow the notification alert to be displayed.
-    //
-    completionHandler(UNAuthorizationOptionBadge | UNAuthorizationOptionSound);
-}
-
-
-- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void(^)(void))completionHandler {
-    NSLog(@"Received notification while the application is in the background");
-    [self showNotification:response.notification.request.content.userInfo];
-    completionHandler();
-}
-
-
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler {
-    NSLog(@"Received remote (silent) notification");
-    [self logNotificationDetails:userInfo];
-    completionHandler(UIBackgroundFetchResultNoData);
-}
-
-
-- (void)logNotificationDetails:(NSDictionary *)userInfo {
-    if (userInfo != nil) {
-        UIApplicationState state = [UIApplication sharedApplication].applicationState;
-        BOOL background = state != UIApplicationStateActive;
-        NSLog(@"Received %@notification: \n%@", background ? @"(background) " : @"", userInfo);
-    }
-}
-
 
 @end

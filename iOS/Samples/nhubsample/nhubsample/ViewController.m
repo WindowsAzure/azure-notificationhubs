@@ -1,7 +1,4 @@
 //
-//  ViewController.m
-//  nhubsample
-//
 //  Copyright © 2018 Microsoft All rights reserved.
 //  Licensed under the Apache License (2.0).
 //
@@ -16,6 +13,11 @@
 
 @implementation ViewController
 
+////////////////////////////////////////////////////////////////////////////////
+//
+// UIViewController methods
+//
+////////////////////////////////////////////////////////////////////////////////
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -24,18 +26,27 @@
     self.tagsTextField.text = [[NSUserDefaults standardUserDefaults] valueForKey:NHUserDefaultTags];
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//
+// Actions
+//
+////////////////////////////////////////////////////////////////////////////////
 
 - (IBAction)handleRegister:(id)sender {
     // Save raw tags text in storage
     [[NSUserDefaults standardUserDefaults] setValue:self.tagsTextField.text forKey:NHUserDefaultTags];
 
+    //
+    // Delegate processing the register action to the app delegate.
+    //
     [[[UIApplication sharedApplication] delegate] performSelector:@selector(handleRegister)];
 }
 
-
 - (IBAction)handleUnregister:(id)sender {
+    //
+    // Delegate processing the unregister action to the app delegate.
+    //
     [[[UIApplication sharedApplication] delegate] performSelector:@selector(handleUnregister)];
 }
-
 
 @end

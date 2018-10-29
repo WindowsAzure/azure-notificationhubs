@@ -1,9 +1,6 @@
 //
-//  NotificationService.m
-//  nhubmodifier
-//
-//  Created by Matthew Podwysocki on 10/25/18.
-//  Copyright © 2018 Microsoft. All rights reserved.
+//  Copyright © 2018 Microsoft All rights reserved.
+//  Licensed under the Apache License (2.0).
 //
 
 #import "NotificationService.h"
