@@ -19,6 +19,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    // Simple method to dismiss keyboard when user taps outside of the UITextField.
+    [self.view endEditing:YES];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 
