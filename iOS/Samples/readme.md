@@ -148,3 +148,7 @@ The iOS platform also allows for you to [modify the incoming push notifications]
 ```
 
 This is implemented by adding a Notification Service Extension to the project and implementing the `didReceiveNotificationRequest` and `serviceExtensionTimeWillExpire` methods.
+
+# Credits
+
+- App icons are based on icons from [Material Design](https://material.io/tools/icons) and were packaged with [MakeAppIcon](https://makeappicon.com/).
