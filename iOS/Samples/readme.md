@@ -1,4 +1,4 @@
-# iOS Notification Hub Sample
+# iOS Notification Hubs Sample
 
 This is a sample project intended to demonstrate the usage of the Azure Notification Hubs iOS Client SDK.  The sample app allows the developer to register the device with a Notification Hub with the given tags as well as unregister the device. 
 
@@ -17,15 +17,15 @@ The sample application requires the following:
 
 In order to set up the Azure Notification Hub, [follow the tutorial](https://docs.microsoft.com/en-us/azure/notification-hubs/notification-hubs-ios-apple-push-notification-apns-get-started) to create the required certificates and register your application.
 
-To run the application, the following values in the `info.plist` must be changed:
-- `NotificationHubConnectionString`: The `DefaultListenSharedAccessSignature` connection string to the notification hub
-- `NotificationHubName`: The notification hub name such as "myhubname"
+To run the application, update the following values in `Info.plist` with values from the notification hub:
+- `NotificationHubConnectionString`: Use the `DefaultListenSharedAccessSignature` connection string from the notification hub created in the tutorial
+- `NotificationHubName`: Use the name of the notification hub created in the tutorial
 
-Once the values have been filled in, build and deploy the application to your device.  From there, you can register your device with the given tags for push, as well as unregister your device.
+Once the values have been updated, build the application and deploy to your device.  From there, you can register the device, set tags used to target the device, and unregister the device.
 
 ## Setting up the notification code
 
-Diving into the code, the Azure Notification Hub, we can use the SDK to connect to the service taking both the connection string and hub name from the `info.plist`.
+Diving into the sample code, we can use the SDK to connect to the service using the connection string and hub name from `Info.plist`.
 
 ```objc
 - (SBNotificationHub *)getNotificationHub {
@@ -36,14 +36,13 @@ Diving into the code, the Azure Notification Hub, we can use the SDK to connect 
 }
 ```
 
-We can then register for push notifications with sound and a badge with the following code:
+We can then register for push notifications (with options to enable sound and badge updates) using the following code:
 
 ```objc
 - (void)handleRegister {
-    UNAuthorizationOptions options =  UNAuthorizationOptionAlert | UNAuthorizationOptionSound | UNAuthorizationOptionBadge;
-
     UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-    [[UNUserNotificationCenter currentNotificationCenter] setDelegate:self];
+
+    UNAuthorizationOptions options =  UNAuthorizationOptionAlert | UNAuthorizationOptionSound | UNAuthorizationOptionBadge;
     [center requestAuthorizationWithOptions:(options) completionHandler:^(BOOL granted, NSError * _Nullable error) {
         if (error != nil) {
             NSLog(@"Error requesting for authorization: %@", error);
@@ -51,19 +50,47 @@ We can then register for push notifications with sound and a badge with the foll
     }];
     [[UIApplication sharedApplication] registerForRemoteNotifications];
 }
+
+
+- (void) application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    NSMutableSet *tags = [[NSMutableSet alloc] init];
+
+    // Load and parse stored tags
+    NSString *unparsedTags = [[NSUserDefaults standardUserDefaults] valueForKey:NHUserDefaultTags];
+    if (unparsedTags.length > 0) {
+        NSArray *tagsArray = [unparsedTags componentsSeparatedByString: @","];
+        [tags addObjectsFromArray:tagsArray];
+    }
+
+    //
+    // Register the device with the Notification Hub.
+    // If the device has not already been registered, this will create the registration.
+    // If the device has already been registered, this will update the existing registration.
+    //
+    SBNotificationHub* hub = [self getNotificationHub];
+    [hub registerNativeWithDeviceToken:deviceToken tags:tags completion:^(NSError* error) {
+        if (error != nil) {
+            NSLog(@"Error registering for notifications: %@", error);
+        } else {
+            [self showAlert:@"Registered" withTitle:@"Registration Status"];
+        }
+    }];
+}
 ```
 
-And we can also unregister the application from the Azure Notification Hub with the following code:
+We can also unregister the device from the Azure Notification Hub with the following code:
 
 ```objc
 - (void)handleUnregister {
+    //
+    // Unregister the device with the Notification Hub.
+    //
     SBNotificationHub *hub = [self getNotificationHub];
-    
-    [hub unregisterNativeWithCompletion :^(NSError* error) {
+    [hub unregisterNativeWithCompletion:^(NSError* error) {
         if (error != nil) {
             NSLog(@"Error unregistering for push: %@", error);
         } else {
-            [self MessageBox:@"Registration Status" message:@"Unregistered"];
+            [self showAlert:@"Unregistered" withTitle:@"Registration Status"];
         }
     }];
 }
@@ -84,13 +111,19 @@ In order to demonstrate handling a push notification, use the Azure Portal for y
 }
 ```
 
-Diving into the code, the push notifications were handled by two method implementations, `userNotificationCenter willPresentNotification` and `userNotification didReceiveNotificationResponse`.
+Diving into the code, the push notifications are handled by the following two `UNUserNotificationCenterDelegate` delegate methods.
+
+The `userNotificationCenter:willPresentNotification:withCompletionHandler:` method handles notifications when the app is in the foreground (before the notification is optionally displayed to the user):
 
 ```objc
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler {
     // Your code goes here
 }
+```
 
+The `userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:` method handles notifications when the app is in the background, _and_ the user taps on the system notification:
+
+```objc
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void(^)(void))completionHandler {
     // Your code goes here
 }
@@ -98,7 +131,7 @@ Diving into the code, the push notifications were handled by two method implemen
 
 ## Handle a silent push
 
-The iOS platform allows for [silent notifications](https://developer.apple.com/documentation/usernotifications/setting_up_a_remote_notification_server/pushing_updates_to_your_app_silently?language=objc) to allow you to notify your application when new data becomes available.  Using the "Test Send" capability, we can send a silent notification using the `content-available` property in the message body.
+The iOS platform allows for [silent notifications](https://developer.apple.com/documentation/usernotifications/setting_up_a_remote_notification_server/pushing_updates_to_your_app_silently?language=objc) which allow you to notify your application when new data is available, without displaying that notification to the user.  Using the "Test Send" capability, we can send a silent notification using the `content-available` property in the message body.
 
 ```
 {
@@ -108,32 +141,17 @@ The iOS platform allows for [silent notifications](https://developer.apple.com/d
 }
 ```
 
-To handle this scenario in code, the `application:didReceiveRemoteNotification:fetchCompletionHandler:` method needs to be implemented such as the following:
+To handle this scenario in code, implement the `UIApplicationDelegate` method `application:didReceiveRemoteNotification:fetchCompletionHandler:`:
 
 ```objc
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler {
-
-    NSLog(@"User Info : %@", userInfo);
-    
-    if(application.applicationState == UIApplicationStateInactive) {
-        NSLog(@"Inactive");
-        
-        completionHandler(UIBackgroundFetchResultNewData);
-    } else if (application.applicationState == UIApplicationStateBackground) {
-        NSLog(@"Background");
-        
-        completionHandler(UIBackgroundFetchResultNewData);
-    } else {
-        NSLog(@"Active");
-        
-        completionHandler(UIBackgroundFetchResultNewData);
-    }
+    // Your code goes here
 }
 ```
 
 ## Handle a mutable push message
 
-The iOS platform also allows for you to [modify the incoming push notifications](https://developer.apple.com/documentation/usernotifications/modifying_content_in_newly_delivered_notifications?language=objc), for example if your message is encrypted or needs translation. We can test this scenario by adding the `mutable-content` flag to message body.
+The iOS platform also allows for you to [modify the incoming push notifications](https://developer.apple.com/documentation/usernotifications/modifying_content_in_newly_delivered_notifications?language=objc). For example, if the notification message is encrypted, needs translation, or other pre-processing before the notification is displayed. We can test this scenario by adding the `mutable-content` flag to message body.
 
 ```
 {
@@ -147,7 +165,7 @@ The iOS platform also allows for you to [modify the incoming push notifications]
 }
 ```
 
-This is implemented by adding a Notification Service Extension to the project and implementing the `didReceiveNotificationRequest` and `serviceExtensionTimeWillExpire` methods.
+Mutable notifications are handled by adding a Notification Service Extension to the project and implementing the `didReceiveNotificationRequest:withContentHandler:` and `serviceExtensionTimeWillExpire` methods.
 
 # Credits
 
